@@ -29,11 +29,11 @@ public class OrderController {
     public ResponseEntity<?> buy(@RequestBody Order order) {
         Product drink = productService.findByName(order.getProductName());
 
-        if(drink.isForAdult() && !order.getUser().isAdult()) {
+        if (drink.isForAdult() && !order.getUser().isAdult()) {
             return ResponseEntity.badRequest().body("You are not adult");
         }
 
-        if(order.getUser().getPocket() < order.getPrice()){
+        if (order.getUser().getPocket() < order.getPrice()) {
             return ResponseEntity.badRequest().body("You don't have enough money");
         }
 
@@ -51,8 +51,15 @@ public class OrderController {
 
     @GetMapping("/summary/all")
     public ResponseEntity<?> getProductsSummaries() {
-    List<DTOorderGetAll> response = new ArrayList<>();
-        Set<Product>  products = new HashSet<>(productService.findAll());
+        List<DTOorderGetAll> response = new ArrayList<>();
+        Set<Product> products = new HashSet<>(productService.findAll());
+
+        for(Product product : products){
+            List<Order> orders = orderService.findAllByProductName(product.getName());
+            int totalAmount = 0;
+            double totalPrice = 0;
+
+        }
 
 
         return ResponseEntity.ok(response);
