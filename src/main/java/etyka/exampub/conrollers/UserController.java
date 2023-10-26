@@ -22,6 +22,6 @@ public class UserController {
     public ResponseEntity<?> getAllUsers() {
         List<User> users = userService.findAll();
         List<DTOuserGetAll> usersDTO = DTOuserGetAll.from(users);
-        return ResponseEntity.ok(userService.findAll());
+        return ResponseEntity.ok(usersDTO);
     }
 }
