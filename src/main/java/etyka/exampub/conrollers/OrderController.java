@@ -75,4 +75,9 @@ public class OrderController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/summary/product")
+    public ResponseEntity<?> getAllOrdersOrderedByProduct(){
+        return null;
+    }
 }
