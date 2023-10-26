@@ -2,11 +2,14 @@ package etyka.exampub.conrollers;
 
 import etyka.exampub.models.DTOs.DTOorderGetAll;
 import etyka.exampub.models.DTOs.DTOorderGetByProduct;
+import etyka.exampub.models.DTOs.DTOorderGetByUser;
 import etyka.exampub.models.DTOs.DTOorderPostBuy;
 import etyka.exampub.models.Order;
 import etyka.exampub.models.Product;
+import etyka.exampub.models.User;
 import etyka.exampub.services.OrderService;
 import etyka.exampub.services.ProductService;
+import etyka.exampub.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final ProductService productService;
+    private final UserService userService;
 
     @PostMapping("/buy")
     public ResponseEntity<?> buy(@RequestBody Order order) {
@@ -99,6 +103,21 @@ public class OrderController {
 
     @GetMapping("/summary/user")
     public ResponseEntity<?> getAllOrdersOrderedByUser() {
-        return null;
+        List<DTOorderGetByUser> response = new ArrayList<>();
+        Set<User> users = new HashSet<>(userService.findAll());
+
+        for (User user : users) {
+            List<Order> orders = user.getOrders();
+
+            for (Order order : orders) {
+                DTOorderGetByUser userOrder = new DTOorderGetByUser();
+                userOrder.setUserId(user.getId());
+                userOrder.setProduct(productService.findByName(order.getProductName()));
+                userOrder.setPrice(order.getPrice());
+
+                response.add(userOrder);
+            }
+        }
+        return ResponseEntity.ok(response);
     }
 }
