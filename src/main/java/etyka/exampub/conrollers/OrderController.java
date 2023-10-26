@@ -1,6 +1,7 @@
 package etyka.exampub.conrollers;
 
 import etyka.exampub.models.DTOs.DTOorderGetAll;
+import etyka.exampub.models.DTOs.DTOorderGetByProduct;
 import etyka.exampub.models.DTOs.DTOorderPostBuy;
 import etyka.exampub.models.Order;
 import etyka.exampub.models.Product;
@@ -52,9 +53,9 @@ public class OrderController {
     @GetMapping("/summary/all")
     public ResponseEntity<?> getProductsSummaries() {
         List<DTOorderGetAll> response = new ArrayList<>();
-        Set<Product> products = new HashSet<>(productService.findAll());
+        Set<Product> drinks = new HashSet<>(productService.findAllByType("drink"));
 
-        for (Product product : products) {
+        for (Product product : drinks) {
             List<Order> orders = orderService.findAllByProductName(product.getName());
             int totalAmount = 0;
             double totalPrice = 0;
@@ -77,7 +78,24 @@ public class OrderController {
     }
 
     @GetMapping("/summary/product")
-    public ResponseEntity<?> getAllOrdersOrderedByProduct(){
-        return null;
+    public ResponseEntity<?> getAllOrdersOrderedByProduct() {
+        List<DTOorderGetByProduct> response = new ArrayList<>();
+        Set<Product> drinks = new HashSet<>(productService.findAllByType("drink"));
+
+        for (Product product : drinks) {
+            List<Order> orders = orderService.findAllByProductName(product.getName());
+
+            for (Order order : orders) {
+                DTOorderGetByProduct drink = new DTOorderGetByProduct();
+                drink.setUserId(order.getUser().getId());
+                drink.setAmount(order.getAmount());
+                drink.setPrice(order.getPrice());
+
+                response.add(drink);
+            }
+        }
+        return ResponseEntity.ok(response);
     }
+
+
 }
