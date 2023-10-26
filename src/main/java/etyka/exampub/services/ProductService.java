@@ -9,6 +9,7 @@ import java.util.List;
 public interface ProductService {
 
     List<Product> findAllByType(String type);
-
     Product findByName(String name);
+
+    List<Product> findAll();
 }

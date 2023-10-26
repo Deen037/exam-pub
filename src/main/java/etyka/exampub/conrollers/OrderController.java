@@ -1,5 +1,6 @@
 package etyka.exampub.conrollers;
 
+import etyka.exampub.models.DTOs.DTOorderGetAll;
 import etyka.exampub.models.DTOs.DTOorderPostBuy;
 import etyka.exampub.models.Order;
 import etyka.exampub.models.Product;
@@ -7,9 +8,15 @@ import etyka.exampub.services.OrderService;
 import etyka.exampub.services.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -42,10 +49,12 @@ public class OrderController {
 
     }
 
-//    @Get("/summary/all")
-//    public ResponseEntity<?> getProductsSummaries() {
-//
-//
-//        return ResponseEntity.ok(orderService.getProductsSummaries());
-//    }
+    @GetMapping("/summary/all")
+    public ResponseEntity<?> getProductsSummaries() {
+    List<DTOorderGetAll> response = new ArrayList<>();
+        Set<Product>  products = new HashSet<>(productService.findAll());
+
+
+        return ResponseEntity.ok(response);
+    }
 }
