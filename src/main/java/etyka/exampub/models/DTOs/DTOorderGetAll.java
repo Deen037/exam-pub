@@ -10,6 +10,4 @@ public class DTOorderGetAll {
     private int amount;
     private double unitPrice;
     private double summaryPrice;
-
-
 }

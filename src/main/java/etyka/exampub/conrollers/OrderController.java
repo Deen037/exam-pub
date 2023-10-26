@@ -31,7 +31,7 @@ public class OrderController {
     @PostMapping("/buy")
     public ResponseEntity<?> buy(@RequestBody Order order) {
 
-        if(!String.valueOf(order.getUser().getRole()).equals("CUSTOMER")) {
+        if (!String.valueOf(order.getUser().getRole()).equals("CUSTOMER")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("You are not CUSTOMER and you are not allowed to buy drinks");
         }

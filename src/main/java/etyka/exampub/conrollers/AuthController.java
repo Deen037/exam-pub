@@ -19,10 +19,10 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody DTOlogin credentials){
+    public ResponseEntity<?> login(@RequestBody DTOlogin credentials) {
         Optional<User> user = userService.findByUsername(credentials.getUsername());
-        if(user.isPresent()){
-            if(user.get().getPassword().equals(credentials.getPassword())){
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(credentials.getPassword())) {
                 return ResponseEntity.ok().build();
             }
         }
