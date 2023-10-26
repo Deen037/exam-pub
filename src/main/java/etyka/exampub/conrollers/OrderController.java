@@ -15,10 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -97,11 +94,12 @@ public class OrderController {
                     .body("Only BARTENDER is allowed to see this page");
         }
 
-        List<DTOorderGetByProduct> response = new ArrayList<>();
+        Map<String,List<DTOorderGetByProduct>> response = new HashMap<>();
         Set<Product> drinks = new HashSet<>(productService.findAllByType("drink"));
 
         for (Product product : drinks) {
             List<Order> orders = orderService.findAllByProductName(product.getName());
+            List<DTOorderGetByProduct> productOrderList = new ArrayList<>();
 
             for (Order order : orders) {
                 DTOorderGetByProduct drink = new DTOorderGetByProduct();
@@ -109,8 +107,9 @@ public class OrderController {
                 drink.setAmount(order.getAmount());
                 drink.setPrice(order.getPrice());
 
-                response.add(drink);
+                productOrderList.add(drink);
             }
+            response.put(product.getName(),productOrderList);
         }
         return ResponseEntity.ok(response);
     }
@@ -123,11 +122,12 @@ public class OrderController {
                     .body("Only BARTENDER is allowed to see this page");
         }
 
-        List<DTOorderGetByUser> response = new ArrayList<>();
+        Map<String,List<DTOorderGetByUser>> response = new HashMap<>();
         Set<User> users = new HashSet<>(userService.findAll());
 
         for (User user : users) {
             List<Order> orders = user.getOrders();
+            List<DTOorderGetByUser> userOrderList = new ArrayList<>();
 
             for (Order order : orders) {
                 DTOorderGetByUser userOrder = new DTOorderGetByUser();
@@ -135,8 +135,10 @@ public class OrderController {
                 userOrder.setProduct(productService.findByName(order.getProductName()));
                 userOrder.setPrice(order.getPrice());
 
-                response.add(userOrder);
+                userOrderList.add(userOrder);
+
             }
+            response.put(user.getName(),userOrderList);
         }
         return ResponseEntity.ok(response);
     }
