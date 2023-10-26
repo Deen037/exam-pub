@@ -11,11 +11,9 @@ import etyka.exampub.services.OrderService;
 import etyka.exampub.services.ProductService;
 import etyka.exampub.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,6 +30,12 @@ public class OrderController {
 
     @PostMapping("/buy")
     public ResponseEntity<?> buy(@RequestBody Order order) {
+
+        if(!String.valueOf(order.getUser().getRole()).equals("CUSTOMER")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("You are not CUSTOMER and you are not allowed to buy drinks");
+        }
+
         Product drink = productService.findByName(order.getProductName());
 
         if (drink.isForAdult() && !order.getUser().isAdult()) {
@@ -55,7 +59,11 @@ public class OrderController {
     }
 
     @GetMapping("/summary/all")
-    public ResponseEntity<?> getProductsSummaries() {
+    public ResponseEntity<?> getProductsSummaries(@RequestHeader String role) {
+        if (!role.equals("BARTENDER")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Only BARTENDER is allowed to see this page");
+        }
         List<DTOorderGetAll> response = new ArrayList<>();
         Set<Product> drinks = new HashSet<>(productService.findAllByType("drink"));
 
@@ -82,7 +90,13 @@ public class OrderController {
     }
 
     @GetMapping("/summary/product")
-    public ResponseEntity<?> getAllOrdersOrderedByProduct() {
+    public ResponseEntity<?> getAllOrdersOrderedByProduct(@RequestHeader String role) {
+
+        if (!role.equals("BARTENDER")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Only BARTENDER is allowed to see this page");
+        }
+
         List<DTOorderGetByProduct> response = new ArrayList<>();
         Set<Product> drinks = new HashSet<>(productService.findAllByType("drink"));
 
@@ -102,7 +116,13 @@ public class OrderController {
     }
 
     @GetMapping("/summary/user")
-    public ResponseEntity<?> getAllOrdersOrderedByUser() {
+    public ResponseEntity<?> getAllOrdersOrderedByUser(@RequestHeader String role) {
+
+        if (!role.equals("BARTENDER")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Only BARTENDER is allowed to see this page");
+        }
+
         List<DTOorderGetByUser> response = new ArrayList<>();
         Set<User> users = new HashSet<>(userService.findAll());
 
