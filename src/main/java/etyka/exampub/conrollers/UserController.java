@@ -1,6 +1,7 @@
 package etyka.exampub.conrollers;
 
 import etyka.exampub.models.DTOs.DTOuserGetAll;
+import etyka.exampub.models.DTOs.DTOuserGetById;
 import etyka.exampub.models.User;
 import etyka.exampub.services.UserService;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class UserController {
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
-        return ResponseEntity.ok(user);
+        DTOuserGetById userDTO = new DTOuserGetById(user.get());
+        return ResponseEntity.ok(userDTO);
     }
 }
