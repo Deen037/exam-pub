@@ -41,4 +41,11 @@ public class OrderController {
         return ResponseEntity.ok(response);
 
     }
+
+//    @Get("/summary/all")
+//    public ResponseEntity<?> getProductsSummaries() {
+//
+//
+//        return ResponseEntity.ok(orderService.getProductsSummaries());
+//    }
 }
