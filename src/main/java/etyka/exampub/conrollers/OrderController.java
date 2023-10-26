@@ -54,13 +54,24 @@ public class OrderController {
         List<DTOorderGetAll> response = new ArrayList<>();
         Set<Product> products = new HashSet<>(productService.findAll());
 
-        for(Product product : products){
+        for (Product product : products) {
             List<Order> orders = orderService.findAllByProductName(product.getName());
             int totalAmount = 0;
             double totalPrice = 0;
 
-        }
+            for (Order order : orders) {
+                totalAmount += order.getAmount();
+                totalPrice += order.getPrice();
+            }
 
+            DTOorderGetAll productTotal = new DTOorderGetAll();
+            productTotal.setProduct(product);
+            productTotal.setAmount(totalAmount);
+            productTotal.setUnitPrice(product.getPrice());
+            productTotal.setSummaryPrice(totalPrice);
+
+            response.add(productTotal);
+        }
 
         return ResponseEntity.ok(response);
     }
