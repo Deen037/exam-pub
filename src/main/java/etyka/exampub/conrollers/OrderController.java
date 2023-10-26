@@ -34,7 +34,7 @@ public class OrderController {
 
         order.getUser().getOrders().add(order);
 
-        orderService.saveOrder(order);
+        orderService.save(order);
 
         DTOorderPostBuy response = new DTOorderPostBuy(order.getUser().getId(), drink.getId(), order.getPrice());
 
