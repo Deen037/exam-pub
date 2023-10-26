@@ -1,11 +1,12 @@
 package etyka.exampub.models.DTOs;
 
 import etyka.exampub.models.Product;
-import etyka.exampub.models.User;
+import lombok.Data;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
 public class DTOproductGetDrinkMenu {
     private Long id;
     private String name;

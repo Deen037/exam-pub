@@ -6,7 +6,7 @@ import etyka.exampub.services.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +18,7 @@ public class AuthController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody DTOlogin credentials){
         Optional<User> user = userService.findByUsername(credentials.getUsername());
         if(user.isPresent()){

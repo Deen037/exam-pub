@@ -1,10 +1,12 @@
 package etyka.exampub.models.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import etyka.exampub.models.User;
+import lombok.Data;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Data
 public class DTOuserGetAll {
 
     private Long id;

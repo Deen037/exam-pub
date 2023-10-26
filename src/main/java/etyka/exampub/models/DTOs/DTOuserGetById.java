@@ -2,9 +2,11 @@ package etyka.exampub.models.DTOs;
 
 import etyka.exampub.models.Order;
 import etyka.exampub.models.User;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class DTOuserGetById {
 
     private Long id;
