@@ -97,5 +97,8 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("/summary/user")
+    public ResponseEntity<?> getAllOrdersOrderedByUser() {
+        return null;
+    }
 }
